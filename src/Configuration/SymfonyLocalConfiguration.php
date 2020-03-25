@@ -6,8 +6,9 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use WebChemistry\ImageStorage\Configuration\ConfigurationInterface;
 
-class SymfonyLocalConfiguration
+class SymfonyLocalConfiguration implements ConfigurationInterface
 {
 
 	private RequestStack $requestStack;

@@ -12,7 +12,6 @@ use WebChemistry\ImageStorage\ImageStorageInterface;
 use WebChemistry\ImageStorage\ImagineFilters\FilterLoader;
 use WebChemistry\ImageStorage\ImagineFilters\FilterLoaderInterface;
 use WebChemistry\ImageStorage\ImagineFilters\FilterProcessor;
-use WebChemistry\ImageStorage\ImagineFilters\ImageFilterInterface;
 use WebChemistry\ImageStorage\Metadata\ImageMetadataFactory;
 use WebChemistry\ImageStorage\Metadata\ImageMetadataFactoryInterface;
 use WebChemistry\ImageStorage\Resolver\BucketResolverInterface;
@@ -29,9 +28,10 @@ use WebChemistry\ImageStorage\SymfonyBundle\Configuration\SymfonyLocalConfigurat
 final class ImageStorageExtension extends Extension
 {
 
-	const FILTER_TAG = 'webchemistry.imageStorage.filter';
-
-	public function load(array $configs, ContainerBuilder $container)
+	/**
+	 * @param string[] $configs
+	 */
+	public function load(array $configs, ContainerBuilder $container): void
 	{
 		$container->register('webchemistry.imageStorage.configuration', SymfonyLocalConfiguration::class)
 			->setAutowired(true)
@@ -41,7 +41,6 @@ final class ImageStorageExtension extends Extension
 
 		$this->loadResolvers($container);
 		$this->loadMetadata($container);
-		$this->loadFilters($container);
 		$this->loadFilterProcessor($container);
 		$this->loadAdapter($container);
 
@@ -74,11 +73,6 @@ final class ImageStorageExtension extends Extension
 		$container->setAlias(PathResolverInterface::class, 'webchemistry.imageStorage.resolvers.path');
 	}
 
-	private static function prefix(string $name): string
-	{
-		return "webchemistry.imageStorage.{$name}";
-	}
-
 	private function loadMetadata(ContainerBuilder $container): void
 	{
 		$container->register('webchemistry.imageStorage.metadata.factory', ImageMetadataFactory::class)
@@ -97,10 +91,6 @@ final class ImageStorageExtension extends Extension
 		$loader = $container->register('webchemistry.imageStorage.filterLoader', FilterLoader::class)
 			->setAutowired(true);
 
-		foreach ($container->findTaggedServiceIds(self::FILTER_TAG) as $serviceId => $tags) {
-			$loader->addMethodCall('addFilter', [$container->get($serviceId)]);
-		}
-
 		$container->setAlias(FilterLoaderInterface::class, 'webchemistry.imageStorage.filterLoader');
 	}
 
@@ -110,12 +100,6 @@ final class ImageStorageExtension extends Extension
 			->setAutowired(true);
 
 		$container->setAlias(AdapterInterface::class, 'webchemistry.imageStorage.adapter');
-	}
-
-	private function loadFilters(ContainerBuilder $container): void
-	{
-		$container->registerForAutoconfiguration(ImageFilterInterface::class)
-			->addTag(self::FILTER_TAG);
 	}
 
 }

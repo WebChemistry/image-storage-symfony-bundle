@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use WebChemistry\ImageStorage\Adapter\AdapterInterface;
 use WebChemistry\ImageStorage\Adapter\SimpleAdapter;
 use WebChemistry\ImageStorage\Configuration\ConfigurationInterface;
+use WebChemistry\ImageStorage\Doctrine\Annotation\ImageScopeFromAnnotation;
 use WebChemistry\ImageStorage\Filter\FilterProcessorInterface;
 use WebChemistry\ImageStorage\ImageStorageInterface;
 use WebChemistry\ImageStorage\ImagineFilters\FilterLoader;
@@ -43,6 +44,7 @@ final class ImageStorageExtension extends Extension
 		$this->loadMetadata($container);
 		$this->loadFilterProcessor($container);
 		$this->loadAdapter($container);
+		$this->loadOthers($container);
 
 		$container->register('webchemistry.imageStorage.storage', LocalStorage::class)
 			->setAutowired(true);
@@ -100,6 +102,14 @@ final class ImageStorageExtension extends Extension
 			->setAutowired(true);
 
 		$container->setAlias(AdapterInterface::class, 'webchemistry.imageStorage.adapter');
+	}
+
+	private function loadOthers(ContainerBuilder $container): void
+	{
+		$container->register('webchemistry.imageStorage.doctrine.annotations.imageScope', ImageScopeFromAnnotation::class)
+			->setAutowired(true);
+
+		$container->setAlias(ImageScopeFromAnnotation::class, 'webchemistry.imageStorage.doctrine.annotations.imageScope');
 	}
 
 }

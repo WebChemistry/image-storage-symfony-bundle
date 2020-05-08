@@ -8,7 +8,11 @@ use WebChemistry\ImageStorage\Doctrine\Annotation\AnnotationScopeProvider;
 use WebChemistry\ImageStorage\File\FileFactory;
 use WebChemistry\ImageStorage\File\FileFactoryInterface;
 use WebChemistry\ImageStorage\Filesystem\FilesystemInterface;
+use WebChemistry\ImageStorage\Filesystem\League\LeagueFilesystemFactoryInterface;
+use WebChemistry\ImageStorage\Filesystem\League\LocalLeagueFilesystemFactory;
 use WebChemistry\ImageStorage\Filesystem\LocalFilesystem;
+use WebChemistry\ImageStorage\Filter\FilterNormalizerCollection;
+use WebChemistry\ImageStorage\Filter\FilterNormalizerCollectionInterface;
 use WebChemistry\ImageStorage\Filter\FilterProcessorInterface;
 use WebChemistry\ImageStorage\ImageStorageInterface;
 use WebChemistry\ImageStorage\ImagineFilters\FilterProcessor;
@@ -39,6 +43,7 @@ final class ImageStorageExtension extends Extension
 		$this->loadPathInfo($container);
 		$this->loadFile($container);
 		$this->loadDoctrine($container);
+		$this->loadFilter($container);
 
 		if (interface_exists(OperationInterface::class)) {
 			$this->loadImagineExtension($container);
@@ -96,8 +101,13 @@ final class ImageStorageExtension extends Extension
 
 	private function loadFilesystem(ContainerBuilder $container): void
 	{
-		$container->register('webchemistry.imageStorage.filesystem', LocalFilesystem::class)
+		$container->register('webchemistry.imageStorage.filesystem.leagueFactory', LocalLeagueFilesystemFactory::class)
 			->setArgument(0, '%kernel.project_dir%/public');
+
+		$container->setAlias(LeagueFilesystemFactoryInterface::class, 'webchemistry.imageStorage.filesystem.leagueFactory');
+
+		$container->register('webchemistry.imageStorage.filesystem', LocalFilesystem::class)
+			->setAutowired(true);
 
 		$container->setAlias(FilesystemInterface::class, 'webchemistry.imageStorage.filesystem');
 	}
@@ -116,6 +126,14 @@ final class ImageStorageExtension extends Extension
 			->setAutowired(true);
 
 		$container->setAlias(FileFactoryInterface::class, 'webchemistry.imageStorage.fileFactory');
+	}
+
+	private function loadFilter(ContainerBuilder $container): void
+	{
+		$container->register('webchemistry.imageStorage.filter.normalizerCollection', FilterNormalizerCollection::class)
+			->setAutowired(true);
+
+		$container->setAlias(FilterNormalizerCollectionInterface::class, 'webchemistry.imageStorage.filter.normalizerCollection');
 	}
 
 }

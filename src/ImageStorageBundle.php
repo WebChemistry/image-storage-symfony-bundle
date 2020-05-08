@@ -5,8 +5,8 @@ namespace WebChemistry\ImageStorage\SymfonyBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use WebChemistry\ImageStorage\ImagineFilters\ImageFilterInterface;
-use WebChemistry\ImageStorage\SymfonyBundle\Extension\CompilerPass\LoadFiltersCompilerPass;
-use WebChemistry\ImageStorage\SymfonyBundle\Extension\ImageStorageExtension;
+use WebChemistry\ImageStorage\SymfonyBundle\Extension\Imagine\CompilerPass\LoadFiltersCompilerPass;
+use WebChemistry\ImageStorage\SymfonyBundle\Extension\Imagine\ImageStorageExtension;
 
 final class ImageStorageBundle extends Bundle
 {

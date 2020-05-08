@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace WebChemistry\ImageStorage\SymfonyBundle\Extension\CompilerPass;
+namespace WebChemistry\ImageStorage\SymfonyBundle\Extension\Imagine\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

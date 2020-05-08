@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace WebChemistry\ImageStorage\SymfonyBundle\Extension;
+namespace WebChemistry\ImageStorage\SymfonyBundle\Extension\Imagine;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;

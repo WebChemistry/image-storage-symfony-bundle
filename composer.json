@@ -5,8 +5,7 @@
     "type": "library",
     "require": {
         "php": ">=7.4",
-        "webchemistry/image-storage": ">= 0.10.0 <1.0.0",
-        "webchemistry/image-storage-imagine-filters": ">= 0.9.1 <1.0.0",
+        "webchemistry/image-storage": ">= 0.11.4 <1.0.0",
         "webchemistry/image-storage-symfony-bridge": ">= 0.9.2 <1.0.0",
         "symfony/dependency-injection": "^5.0",
         "symfony/http-kernel": "^5.0"
@@ -18,7 +17,8 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan-deprecation-rules": "^0.12.2",
         "warengo/qa": "2.0.1",
-        "codeception/module-phpbrowser": "^1.0.0"
+        "codeception/module-phpbrowser": "^1.0.0",
+        "webchemistry/image-storage-imagine-filters": ">= 0.11.0 <1.0.0"
     },
     "autoload": {
         "psr-4": {
